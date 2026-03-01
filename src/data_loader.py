@@ -11,7 +11,12 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 # Constants (imported by other modules)
 # ──────────────────────────────────────────────
 
-BASE_PATH  = "/kaggle/input/deepfake-and-real-images/Dataset"
+# Auto-detect environment (Kaggle vs Local)
+if os.path.exists("/kaggle/input"):
+    BASE_PATH = "/kaggle/input/deepfake-and-real-images/Dataset"
+else:
+    BASE_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "Dataset")
+
 TRAIN_DIR  = os.path.join(BASE_PATH, "Train")
 VAL_DIR    = os.path.join(BASE_PATH, "Validation")
 TEST_DIR   = os.path.join(BASE_PATH, "Test")

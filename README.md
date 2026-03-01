@@ -1,6 +1,19 @@
 # 🔍 DeepFake Images Detector
 
-A binary CNN classifier that detects whether a face image is **Real** or **AI-generated (Fake)**, built with TensorFlow/Keras and an interactive Jupyter/Kaggle widget UI.
+A binary CNN classifier that detects whether a face image is **Real** or **AI-generated (Fake)**, with a full interactive GUI built using ipywidgets.
+
+![Python](https://img.shields.io/badge/Python-3.9+-blue) ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.10+-orange) ![Kaggle](https://img.shields.io/badge/Platform-Kaggle-20BEFF) ![License](https://img.shields.io/badge/License-MIT-green)
+
+---
+
+## 🚀 Quickest Way to Run (Kaggle — No Setup Needed)
+
+1. **Open Kaggle** → [kaggle.com](https://www.kaggle.com)
+2. **Add the dataset** → Search for [deepfake-and-real-images](https://www.kaggle.com/datasets/manjilkarki/deepfake-and-real-images) and add it to your notebook inputs
+3. **Open the notebook** → `notebooks/deepfake_detector.ipynb`
+4. Click **Run All** — training + evaluation + interactive app launches automatically
+
+That's it. No installation, no configuration.
 
 ---
 
@@ -8,10 +21,19 @@ A binary CNN classifier that detects whether a face image is **Real** or **AI-ge
 
 ```
 deepfake-detector-system/
+├── data/                        # Local dataset (not tracked by Git)
+├── models/                      # Saved model files (not tracked by Git)
+├── notebooks/
+│   └── deepfake_detector.ipynb  # ⭐ Ready-to-run Kaggle notebook
+├── outputs/                     # Evaluation outputs
 ├── src/
-│   └── model.py          # Model architecture, training & evaluation pipeline
+│   ├── data_loader.py           # Dataset paths + ImageDataGenerators
+│   ├── model.py                 # CNN architecture
+│   ├── train.py                 # Training loop + callbacks
+│   ├── evaluate.py              # Test set evaluation + metrics
+│   └── predict.py               # Single image + batch inference
 ├── app/
-│   └── app.py            # Interactive ipywidgets GUI (Kaggle / Jupyter)
+│   └── app.py                   # Interactive ipywidgets GUI
 ├── requirements.txt
 └── README.md
 ```
@@ -20,96 +42,107 @@ deepfake-detector-system/
 
 ## 🧠 Model Architecture
 
-A 3-block CNN trained for binary classification (`Fake = 0`, `Real = 1`):
+3-block CNN trained for binary classification:
 
 ```
+Input (128×128×3)
+    │
 Conv(32) → BatchNorm → MaxPool → Dropout(0.25)
+    │
 Conv(64) → BatchNorm → MaxPool → Dropout(0.25)
+    │
 Conv(128)→ BatchNorm → MaxPool → Dropout(0.30)
+    │
 Dense(128) → BatchNorm → Dropout(0.50)
-Dense(1, sigmoid)
+    │
+Dense(1, sigmoid)  →  Fake = 0 | Real = 1
 ```
 
-- **Input size:** 128 × 128 × 3  
-- **Optimizer:** Adam (lr = 0.001)  
-- **Loss:** Binary cross-entropy  
-- **Callbacks:** EarlyStopping, ReduceLROnPlateau, ModelCheckpoint  
-
----
-
-## 📊 Dataset
-
-[deepfake-and-real-images](https://www.kaggle.com/datasets) — organised as:
-
-```
-Dataset/
-├── Train/
-│   ├── Fake/
-│   └── Real/
-├── Validation/
-│   ├── Fake/
-│   └── Real/
-└── Test/
-    ├── Fake/
-    └── Real/
-```
-
----
-
-## 🚀 Quick Start
-
-### 1 — Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2 — Train the model (run in Kaggle or locally with the dataset mounted)
-
-```bash
-python src/model.py
-```
-
-This saves `final_deepfake_model.h5` to `/kaggle/working/` (or the current directory).
-
-### 3 — Launch the GUI
-
-Open a Jupyter / Kaggle notebook and run:
-
-```python
-%run app/app.py
-```
+- **Optimizer:** Adam (lr = 0.001)
+- **Loss:** Binary Cross-Entropy
+- **Callbacks:** EarlyStopping · ReduceLROnPlateau · ModelCheckpoint
 
 ---
 
 ## 🖥️ App Features
 
-| Tab | Description |
+| Tab | What it does |
 |-----|-------------|
-| 🔍 Detect | Single-image or batch prediction with confidence scores |
-| 📊 Dashboard | Live charts — real/fake distribution & confidence histogram |
-| 📋 History | Scrollable log of all predictions; export to CSV |
+| 🔍 **Detect** | Upload a single image or batch — get Real/Fake prediction with confidence |
+| 📊 **Dashboard** | Live charts showing Real vs Fake distribution + confidence histogram |
+| 📋 **History** | Scrollable log of all predictions — export to CSV |
 
-**Detection modes:**
-- **Basic** — label + confidence donut chart  
-- **Diagnostic** — label + confidence + probability bar chart  
-
----
-
-## 📈 Evaluation Metrics
-
-The pipeline reports **accuracy, precision, recall**, a **confusion matrix**, and a full **classification report** on the held-out test set.
+Two detection modes:
+- **Basic** — Label + confidence donut chart
+- **Diagnostic** — Label + confidence + full probability breakdown
 
 ---
 
-## 🛠️ Requirements
+## 💻 Run Locally (Alternative)
 
-See `requirements.txt`. Core dependencies:
+### 1. Clone the repo
+```bash
+git clone https://github.com/huda-usman/deepfake-detector-system
+cd deepfake-detector-system
+```
 
-- Python ≥ 3.9  
-- TensorFlow ≥ 2.10  
-- OpenCV, Pillow, NumPy, scikit-learn  
-- ipywidgets, matplotlib, pandas  
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Add the dataset
+Download from [Kaggle](https://www.kaggle.com/datasets/manjilkarki/deepfake-and-real-images) and place it at:
+```
+data/
+└── Dataset/
+    ├── Train/
+    │   ├── Fake/
+    │   └── Real/
+    ├── Validation/
+    │   ├── Fake/
+    │   └── Real/
+    └── Test/
+        ├── Fake/
+        └── Real/
+```
+
+### 4. Train the model
+```bash
+python src/train.py
+```
+
+### 5. Evaluate
+```bash
+python src/evaluate.py
+```
+
+### 6. Predict a single image
+```bash
+python src/predict.py --image path/to/face.jpg
+```
+
+### 7. Launch the app
+```bash
+jupyter notebook notebooks/deepfake_detector.ipynb
+```
+
+---
+
+## 📦 Requirements
+
+| Package | Version |
+|---------|---------|
+| Python | ≥ 3.9 |
+| TensorFlow | ≥ 2.10 |
+| OpenCV | ≥ 4.6 |
+| scikit-learn | ≥ 1.1 |
+| ipywidgets | ≥ 8.0 |
+
+Install all at once:
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
