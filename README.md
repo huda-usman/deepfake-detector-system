@@ -224,7 +224,9 @@ pip install -r requirements.txt
 
 <div align="center">
 
-Made with ❤️ by **[huda-usman](https://github.com/huda-usman)**
+**Made by [huda-usman](https://github.com/huda-usman)**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-hudausman010-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/hudausman010)
 
 *ML Semester Project*
 
