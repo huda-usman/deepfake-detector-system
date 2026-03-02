@@ -1,19 +1,116 @@
-# 🔍 DeepFake Images Detector
+<div align="center">
 
-A binary CNN classifier that detects whether a face image is **Real** or **AI-generated (Fake)**, with a full interactive GUI built using ipywidgets.
+# 🔍 DeepFake Image Detector
 
-![Python](https://img.shields.io/badge/Python-3.9+-blue) ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.10+-orange) ![Kaggle](https://img.shields.io/badge/Platform-Kaggle-20BEFF) ![License](https://img.shields.io/badge/License-MIT-green)
+### *Can you tell what's real? Our CNN can.*
+
+A deep learning system that detects AI-generated (fake) face images with high confidence — featuring a full interactive GUI, batch detection, and live analytics.
+
+<br>
+
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.10+-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)](https://tensorflow.org)
+[![Kaggle](https://img.shields.io/badge/Kaggle-Ready-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://kaggle.com)
+[![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
+
+<br>
+
+</div>
 
 ---
 
-## 🚀 Quickest Way to Run (Kaggle — No Setup Needed)
+## ✨ What It Does
 
-1. **Open Kaggle** → [kaggle.com](https://www.kaggle.com)
-2. **Add the dataset** → Search for [deepfake-and-real-images](https://www.kaggle.com/datasets/manjilkarki/deepfake-and-real-images) and add it to your notebook inputs
-3. **Open the notebook** → `notebooks/deepfake_detector.ipynb`
-4. Click **Run All** — training + evaluation + interactive app launches automatically
+> Upload a face image → get an instant **REAL** or **FAKE** verdict with confidence score, probability breakdown, and visual analytics.
 
-That's it. No installation, no configuration.
+| | Feature |
+|---|---|
+| 🤖 | **CNN classifier** trained on thousands of real and AI-generated face images |
+| 🖼️ | **Single & batch detection** — analyze one image or hundreds at once |
+| 📊 | **Live analytics dashboard** — confidence charts, distribution graphs |
+| 📋 | **Prediction history** — full log with CSV export |
+| ⚡ | **Runs on Kaggle** — no installation or setup needed |
+
+---
+
+## 🚀 Quickstart — Run in 4 Steps on Kaggle
+
+> No installation. No configuration. Just click and run.
+
+```
+1. Go to kaggle.com and create a free account
+        ↓
+2. Add the dataset → search "deepfake-and-real-images" in Kaggle datasets
+        ↓
+3. Open notebooks/deepfake_detector.ipynb in a new Kaggle notebook
+        ↓
+4. Click "Run All" — training + evaluation + interactive app launches automatically ✅
+```
+
+---
+
+## 🧠 Model Architecture
+
+```
+Input Image (128 × 128 × 3)
+         │
+         ▼
+┌─────────────────────────────┐
+│  Conv2D(32)  + BatchNorm    │  ← Block 1
+│  MaxPool    + Dropout(0.25) │
+└─────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│  Conv2D(64)  + BatchNorm    │  ← Block 2
+│  MaxPool    + Dropout(0.25) │
+└─────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│  Conv2D(128) + BatchNorm    │  ← Block 3
+│  MaxPool    + Dropout(0.30) │
+└─────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│  Dense(128)  + BatchNorm    │  ← Classifier Head
+│  Dropout(0.50)              │
+│  Dense(1, sigmoid)          │
+└─────────────────────────────┘
+         │
+         ▼
+   🤖 FAKE (0)  or  👤 REAL (1)
+```
+
+| Setting | Value |
+|---------|-------|
+| Optimizer | Adam (lr = 0.001) |
+| Loss | Binary Cross-Entropy |
+| Input Size | 128 × 128 × 3 |
+| Early Stopping | patience = 5 |
+| LR Scheduler | ReduceLROnPlateau |
+
+---
+
+## 🖥️ Interactive App
+
+The app runs directly inside the Kaggle notebook with 3 tabs:
+
+### 🔍 Detect Tab
+Upload a single image or a batch — choose between two modes:
+- **Basic Mode** → Label + confidence donut chart
+- **Diagnostic Mode** → Label + confidence + full probability bar chart
+
+### 📊 Dashboard Tab
+Live statistics that update after every detection:
+- Real vs Fake distribution pie chart
+- Confidence score histogram across all predictions
+
+### 📋 History Tab
+- Scrollable log of every prediction made
+- Timestamp, filename, result, confidence, raw score
+- One-click **CSV export**
 
 ---
 
@@ -21,64 +118,34 @@ That's it. No installation, no configuration.
 
 ```
 deepfake-detector-system/
-├── data/                        # Local dataset (not tracked by Git)
-├── models/                      # Saved model files (not tracked by Git)
-├── notebooks/
-│   └── deepfake_detector.ipynb  # ⭐ Ready-to-run Kaggle notebook
-├── outputs/                     # Evaluation outputs
-├── src/
-│   ├── data_loader.py           # Dataset paths + ImageDataGenerators
-│   ├── model.py                 # CNN architecture
-│   ├── train.py                 # Training loop + callbacks
-│   ├── evaluate.py              # Test set evaluation + metrics
-│   └── predict.py               # Single image + batch inference
-├── app/
-│   └── app.py                   # Interactive ipywidgets GUI
+│
+├── 📓 notebooks/
+│   └── deepfake_detector.ipynb   ← ⭐ Start here
+│
+├── 🧠 src/
+│   ├── data_loader.py            ← Dataset paths + generators
+│   ├── model.py                  ← CNN architecture
+│   ├── train.py                  ← Training loop + callbacks
+│   ├── evaluate.py               ← Metrics + confusion matrix
+│   └── predict.py                ← Single & batch inference
+│
+├── 🖥️ app/
+│   └── app.py                    ← Interactive GUI
+│
+├── 📦 data/                      ← Dataset (not tracked by Git)
+├── 💾 models/                    ← Saved .h5 files (not tracked)
+├── 📤 outputs/                   ← Evaluation outputs
+│
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## 🧠 Model Architecture
+## 💻 Run Locally
 
-3-block CNN trained for binary classification:
-
-```
-Input (128×128×3)
-    │
-Conv(32) → BatchNorm → MaxPool → Dropout(0.25)
-    │
-Conv(64) → BatchNorm → MaxPool → Dropout(0.25)
-    │
-Conv(128)→ BatchNorm → MaxPool → Dropout(0.30)
-    │
-Dense(128) → BatchNorm → Dropout(0.50)
-    │
-Dense(1, sigmoid)  →  Fake = 0 | Real = 1
-```
-
-- **Optimizer:** Adam (lr = 0.001)
-- **Loss:** Binary Cross-Entropy
-- **Callbacks:** EarlyStopping · ReduceLROnPlateau · ModelCheckpoint
-
----
-
-## 🖥️ App Features
-
-| Tab | What it does |
-|-----|-------------|
-| 🔍 **Detect** | Upload a single image or batch — get Real/Fake prediction with confidence |
-| 📊 **Dashboard** | Live charts showing Real vs Fake distribution + confidence histogram |
-| 📋 **History** | Scrollable log of all predictions — export to CSV |
-
-Two detection modes:
-- **Basic** — Label + confidence donut chart
-- **Diagnostic** — Label + confidence + full probability breakdown
-
----
-
-## 💻 Run Locally (Alternative)
+<details>
+<summary><b>Click to expand local setup instructions</b></summary>
 
 ### 1. Clone the repo
 ```bash
@@ -91,23 +158,17 @@ cd deepfake-detector-system
 pip install -r requirements.txt
 ```
 
-### 3. Add the dataset
-Download from [Kaggle](https://www.kaggle.com/datasets/manjilkarki/deepfake-and-real-images) and place it at:
+### 3. Download the dataset
+Get it from [Kaggle](https://www.kaggle.com/datasets/manjilkarki/deepfake-and-real-images) and place it as:
 ```
 data/
 └── Dataset/
-    ├── Train/
-    │   ├── Fake/
-    │   └── Real/
-    ├── Validation/
-    │   ├── Fake/
-    │   └── Real/
-    └── Test/
-        ├── Fake/
-        └── Real/
+    ├── Train/   → Fake/  Real/
+    ├── Validation/ → Fake/  Real/
+    └── Test/    → Fake/  Real/
 ```
 
-### 4. Train the model
+### 4. Train
 ```bash
 python src/train.py
 ```
@@ -127,6 +188,8 @@ python src/predict.py --image path/to/face.jpg
 jupyter notebook notebooks/deepfake_detector.ipynb
 ```
 
+</details>
+
 ---
 
 ## 📦 Requirements
@@ -138,14 +201,31 @@ jupyter notebook notebooks/deepfake_detector.ipynb
 | OpenCV | ≥ 4.6 |
 | scikit-learn | ≥ 1.1 |
 | ipywidgets | ≥ 8.0 |
+| pandas | ≥ 1.5 |
+| matplotlib | ≥ 3.6 |
 
-Install all at once:
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## 👤 Author
+## 🗂️ Dataset
 
-**huda-usman** — ML Semester Project
+[deepfake-and-real-images](https://www.kaggle.com/datasets/manjilkarki/deepfake-and-real-images) on Kaggle
+
+| Split | Fake | Real |
+|-------|------|------|
+| Train | ✅ | ✅ |
+| Validation | ✅ | ✅ |
+| Test | ✅ | ✅ |
+
+---
+
+<div align="center">
+
+Made with ❤️ by **[huda-usman](https://github.com/huda-usman)**
+
+*ML Semester Project*
+
+</div>
