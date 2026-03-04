@@ -1,5 +1,5 @@
 <div align="center">
-
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:0a0a1a,100:7b2ff7&height=120&text=DeepFake%20Image%20Detector&fontSize=36&fontColor=ffffff&fontAlignY=55&desc=Can%20you%20tell%20what%27s%20real%3F%20Our%20CNN%20can.&descAlignY=78&descSize=14" width="100%"/>
 # 🔍 DeepFake Image Detector
 
 ### *Can you tell what's real? Our CNN can.*
@@ -224,10 +224,16 @@ pip install -r requirements.txt
 
 <div align="center">
 
-**Made by [huda-usman](https://github.com/huda-usman)**
+<img src="https://capsule-render.vercel.app/api?type=rect&color=0:7b2ff7,100:0a0a1a&height=80&section=footer" width="100%"/>
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-hudausman010-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/hudausman010)
+### 🙋‍♀️ Connect with Me
 
-*ML Semester Project*
+Developed by **Huda Usman**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Huda%20Usman-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/hudausman010)
+
+<br/>
+
+⭐ **If you found this project interesting, please give it a star!** ⭐
 
 </div>
